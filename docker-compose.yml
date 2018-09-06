@@ -1,0 +1,181 @@
+version: '3.6'
+services:
+
+  mysql56:
+    image: mysql:5.6
+    container_name: mysql56
+    networks:
+      - backend
+    ports:
+      - "3306:3306"
+    volumes:
+      # - ~/www/docker/Config/mysql/mysql.cnf:{/etc/mysql/conf.d/mysql.cnf}:ro
+      - ./docker/Databases/mysql/:/var/lib/mysql/:rw
+      - ./docker/Logs/mysql/:/var/log/mysql/:rw
+    # env_file:
+    #   - ".env"
+    environment:
+      # - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      # - MYSQL_DATABASE=${MYSQL_DATABASE}
+      # - MYSQL_USER=${MYSQL_USER}
+      # - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        - MYSQL_ROOT_PASSWORD=root
+    restart: always
+  
+  
+  nginx:
+    image: shopex/nginx
+    container_name: nginx
+    networks:
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ~/www/:/data/httpd
+    # links:
+    #   - php-fpm56:php-fpm56
+    #   - php-fpm71:php-fpm71
+    #   - php-fpm72:php-fpm72 
+    environment:
+      - TZ-Asia/Shanghai
+    restart: always
+
+  php-fpm56:
+    build: ./docker/Config/php/php56
+    container_name: php-fpm56
+    networks:
+      - backend
+    expose:
+      - "9000"
+      - "80"
+    volumes:
+       - ~/www/:/data/httpd
+       - ./docker/Config/php/php56/etc/php.ini:/usr/local/php56/etc/php.ini
+  #    - ./docker/Config/php/php56/etc/php-fpm.conf:/usr/local/php56/etc/php-fpm.conf:rw
+  #    - ./docker/Config/php/php56/etc/php-fpm.d/www.conf:/usr/local/php56/etc/php-fpm.d/www.conf:rw
+       - ./docker/Config/php/php56/etc/php.d:/usr/local/php56/etc/php.d:rw
+       - ./docker/Config/php/php56/etc/extention:/usr/local/php56/lib/php/c_extention:rw
+  #    - ./docker/Config/php/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf:rw
+  #    - ./docker/Logs/php-fpm/:/var/log/php-fpm/:rw
+    # links:
+    #   - mysql56
+    #   - redis
+    #   - rabbitmq
+    environment:
+      - TZ-Asia/Shanghai
+      - REDIS_PORT=6379
+      # - memcached:memcached
+      # - mongo:mongo
+    restart: always
+
+#  php-fpm71:
+#    image: shopex/php:php-fpm71
+#    container_name: php-fpm71
+#    networks:
+#      - backend
+#    expose:
+#      - "9000"
+#    volumes:
+#      - ~/www/:/data/httpd
+#  #   - ./docker/Config/php/php.ini:/usr/local/etc/php/php.ini:ro
+#  #   - ./docker/Config/php/conf.d:/usr/local/etc/php/conf.d:rw
+#  #    - ./docker/Config/php/php71/etc/php-fpm.d/www.conf:/usr/local/php71/etc/php-fpm.d/www.conf:rw
+#  #   - ./docker/Logs/php-fpm/:/var/log/php-fpm/:rw
+#    # links:
+#    #   - mysql56
+#    #   - redis
+#    #   - rabbitmq
+#    environment:
+#      - TZ-Asia/Shanghai
+#      - REDIS_PORT=6379
+#      # - memcached:memcached
+#      # - mongo:mongo
+#    restart: always 
+    
+    
+  php-fpm72:
+    build: ./docker/Config/php/php72
+    container_name: php-fpm72
+    networks:
+      - backend
+    expose:
+      - "9000"
+      - "80"
+    volumes:
+      - ~/www/:/data/httpd
+      - ./docker/Config/php/php72/php.ini:/usr/local/etc/php/php.ini:ro
+      - ./docker/Config/php/php72/conf.d:/usr/local/etc/php/conf.d:rw
+      - ./docker/Config/php/php72/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf:rw
+      - ./docker/Logs/php-fpm/:/var/log/php-fpm/:rw
+    # links:
+    #   - mysql56
+    #   - redis
+    #   - rabbitmq
+    environment:
+      - TZ-Asia/Shanghai
+      - REDIS_PORT=6379
+      # - memcached:memcached
+      # - mongo:mongo
+    restart: always 
+    
+
+  redis:
+    image: redis
+    # command: redis-server /usr/local/etc/redis.conf
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+    volumes:
+      - ~/www/docker/Databases/redis/:/usr/local/redis/:rw
+      # - ~/www/docker/Config/redis/redis.conf:{/usr/local/etc/redis.conf}:ro
+    container_name: redis
+    environment:
+      - TZ=Asia/Shanghai
+    restart: always
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5671:5671"
+      - "5672:5672"
+      - "4369:4369"
+      - "25672:25672"
+      - "15671:15671"
+      - "15672:15672"
+    networks:
+      - backend  
+    environment:
+      - TZ=Asia/Shanghai
+    restart: always
+
+    # memcached:
+  #   image: memcached
+  #   ports:
+  #     - "11211:11211"
+  #   container_name: memcached
+  #   environment:
+  #     - TZ=Asia/Shanghai
+  #   restart: always
+  
+  ftpd_server:
+    image: stilliard/pure-ftpd:hardened
+    container_name: pure-ftpd
+    ports:
+      - "21:21"
+      - "30000-30009:30000-30009"
+    volumes: # remember to replace /folder_on_disk/ with the path to where you want to store the files on the host machine
+      - "./docker/ftp:/data/ftp:rw"
+      - "./docker/Config/ftp:/etc/pure-ftpd"
+    environment:
+      - TZ=Asia/Shanghai
+    networks:
+      - backend
+    restart: always
+    
+    
+networks:
+     backend:
+      driver: bridge
