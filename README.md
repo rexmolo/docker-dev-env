@@ -31,3 +31,8 @@
 进入某个镜像：`docker exec -it php-fpm56 bash`
 
 
+
+
+备注：
+
+`docker-compose.yml` 中一些挂载路径可能需要做一些简单调整，例如 `php-fpm56` 中 `volumes` 里面的 `~/www/:/data/httpd` 可能需要修改成你自己的项目存放路径
