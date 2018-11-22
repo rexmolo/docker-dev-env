@@ -32,6 +32,14 @@
 
 
 
+fastcgi：
+
+Php56：`fastcgi_pass php-fpm56:9000;`
+
+Php72:`fastcgi_pass php-fpm72:9000;`
+
+
+
 
 备注：
 
