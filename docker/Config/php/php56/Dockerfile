@@ -1,4 +1,5 @@
-FROM shopex/php:php-fpm56
+#FROM shopex/php:php-fpm56
+FROM shopex/php56
 
 RUN yum install php-pecl-xdebug -y
 
