@@ -22,7 +22,7 @@
 
 
 
-启动所有镜像： `docker-compose -d up`
+启动所有镜像： `docker-compose up` 安装之后可以用 `docker-compose -d up`
 
 停止所有镜像：`docker-compose down`
 
