@@ -18,7 +18,7 @@
 
 使用方法：
 
-`git clone git@github.com:mh1988/develop-environment.git`
+`git clone git@github.com:rexmolo/docker-dev-env.git`
 
 
 
