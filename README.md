@@ -18,7 +18,7 @@
 
 使用方法：
 
-`https://github.com/rexmolo/docker-dev-env.git`
+`git clone https://github.com/rexmolo/docker-dev-env.git`
 
 
 
