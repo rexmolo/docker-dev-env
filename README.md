@@ -40,10 +40,14 @@ Php72:`fastcgi_pass php-fpm72:9000;`
 
 
 
-ftpd_server:
-进入容器内
-添加账号命令:` useradd ftptest -g ftpgroup -d /home/ftpusers/ftptest -s /sbin/nologin`
+ftpd_server:（容器内执行下属命令）
+
+添加账号命令:
+
+` useradd ftptest -g ftpgroup -d /home/ftpusers/ftptest -s /sbin/nologin`
+
 输入下面命令，会提示你设置密码，之后就可以正常使用了
+
 `pure-pw useradd ftptest -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u ftptest -d /home/ftpusers/ftptest`
 
 
