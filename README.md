@@ -16,31 +16,33 @@
 
 
 
-使用方法：
+##使用方法：
 
 `git clone https://github.com/rexmolo/docker-dev-env.git`
 
 
 
-启动所有镜像： `docker-compose up` 安装之后可以用 `docker-compose -d up`
+#### 容器管理
 
-停止所有镜像：`docker-compose down`
+启动所有： `docker-compose up` 安装之后可以用 `docker-compose -d up`
 
-重启某个镜像：`docker-compose restart php-fpm56`
+停止所有：`docker-compose down`
 
-进入某个镜像：`docker exec -it php-fpm56 bash`
+重启某个：`docker-compose restart php-fpm56`
+
+进入某个：`docker exec -it php-fpm56 bash`
 
 
 
-fastcgi：
+#### fastcgi：
 
 Php56：`fastcgi_pass php-fpm56:9000;`
 
-Php72:`fastcgi_pass php-fpm72:9000;`
+Php72:  `fastcgi_pass php-fpm72:9000;`
 
 
 
-ftpd_server:（容器内执行下属命令）
+#### ftpd_server:（容器内执行下属命令）
 
 添加账号命令:
 
@@ -52,6 +54,12 @@ ftpd_server:（容器内执行下属命令）
 
 
 
-备注：
+#### RabbitMQ
 
-`docker-compose.yml` 中一些挂载路径可能需要做一些简单调整，例如 `php-fpm56` 中 `volumes` 里面的 `~/www/:/data/httpd` 可能需要修改成你自己的项目存放路径
+界面管理： http://127.0.0.1:15672  账号：guest  密码：guest
+
+
+
+> 备注：
+>
+> `docker-compose.yml` 中一些挂载路径可能需要做一些简单调整，例如 `php-fpm56` 中 `volumes` 里面的 `~/www/:/data/httpd` 可能需要修改成你自己的项目存放路径
