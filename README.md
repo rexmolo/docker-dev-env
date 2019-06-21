@@ -52,6 +52,18 @@ Php72:  `fastcgi_pass php-fpm72:9000;`
 
 `pure-pw useradd ftptest -f /etc/pure-ftpd/passwd/pureftpd.passwd -m -u ftptest -d /home/ftpusers/ftptest`
 
+看看有几个用户：
+
+**pure-pw list**
+
+重置 `ttt` 用户的密码：
+
+**pure-pw passwd ttt**
+
+数据刷新：
+
+**pure-pw mkdb**
+
 
 
 #### RabbitMQ
