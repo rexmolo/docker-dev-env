@@ -95,7 +95,8 @@ services:
     
     
   php-fpm72:
-    build: ./docker/Config/php/php72
+    # build: ./docker/Config/php/php72
+    image: rexmolo/php-fpm72:1.0.0
     container_name: php-fpm72
     networks:
       - backend
